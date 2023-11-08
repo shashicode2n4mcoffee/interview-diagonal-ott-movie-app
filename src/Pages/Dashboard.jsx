@@ -17,7 +17,12 @@ const Dashboard = ({ fetchMoviesRequest, data, loading, error }) => {
       )
       setMovieList(filteredMovies)
     } else {
-      setMovieList(data?.page?.['content-items']?.content)
+      const temp = movieList &&
+        data?.page?.['content-items']?.content && [
+          ...movieList,
+          ...data?.page?.['content-items']?.content,
+        ]
+      setMovieList(temp ? temp : data?.page?.['content-items']?.content)
     }
   }, [data, searchTerm])
 
@@ -35,13 +40,15 @@ const Dashboard = ({ fetchMoviesRequest, data, loading, error }) => {
         <SearchBar onSearch={setSearchTerm} searchTerm={searchTerm} />
       </div>
       <div className='movie-list'>
-        <MovieList
-          movies={movieList}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          totalPages={data?.page?.['total-content-items'] || 0}
-          className='movie-list'
-        />
+        {data?.page?.['total-content-items'] && (
+          <MovieList
+            movies={movieList}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalPages={data?.page?.['total-content-items'] || 0}
+            className='movie-list'
+          />
+        )}
       </div>
     </div>
   )

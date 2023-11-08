@@ -1,16 +1,24 @@
-// MovieList.jsx
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
+import InfiniteScroll from 'react-infinite-scroll-component'
 import { Grid, Card, CardContent, Typography, CardMedia } from '@mui/material'
-import { Pagination } from '@mui/material'
-import api from '../Api'
 
 const MovieList = ({ movies, currentPage, setCurrentPage, totalPages }) => {
-  const handleChangePage = (event, newPage) => {
-    setCurrentPage(newPage)
+  const [hasMore, setHasMore] = React.useState(true)
+  const loadMoreData = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1)
+    } else {
+      setHasMore(false)
+    }
   }
 
   return (
-    <div>
+    <InfiniteScroll
+      dataLength={movies?.length}
+      next={loadMoreData}
+      hasMore={hasMore}
+      loader={<h4>Loading...</h4>}
+    >
       <Grid container spacing={3}>
         {movies?.map((movie, index) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
@@ -21,8 +29,8 @@ const MovieList = ({ movies, currentPage, setCurrentPage, totalPages }) => {
                 image={`https://test.create.diagnal.com/images/${movie['poster-image']}`}
                 alt={movie.name}
               />
-              <CardContent sx={{ backgroundColor: 'black' }}>
-                <Typography variant='h5' sx={{ color: 'white' }}>
+              <CardContent style={{ backgroundColor: 'black' }}>
+                <Typography variant='h5' style={{ color: 'white' }}>
                   {movie.name}
                 </Typography>
               </CardContent>
@@ -30,24 +38,7 @@ const MovieList = ({ movies, currentPage, setCurrentPage, totalPages }) => {
           </Grid>
         ))}
       </Grid>
-      <Pagination
-        count={totalPages}
-        page={currentPage}
-        onChange={handleChangePage}
-        color='primary'
-        sx={{
-          marginTop: '20px',
-          display: 'flex',
-          justifyContent: 'center',
-          '& .MuiPaginationItem-root': {
-            color: 'white',
-          },
-          '& .MuiPaginationItem-page.Mui-selected': {
-            backgroundColor: '#1976D2',
-          },
-        }}
-      />
-    </div>
+    </InfiniteScroll>
   )
 }
 
