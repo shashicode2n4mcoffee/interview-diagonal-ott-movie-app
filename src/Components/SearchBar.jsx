@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { TextField, IconButton } from '@mui/material'
+import { TextField, IconButton, InputAdornment } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import SearchIcon from '@mui/icons-material/Search'
 
 const SearchBar = ({ onSearch, searchTerm }) => {
   const [showBackButton, setShowBackButton] = useState(false)
@@ -15,7 +16,13 @@ const SearchBar = ({ onSearch, searchTerm }) => {
   }
 
   return (
-    <div>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
       {showBackButton && (
         <IconButton onClick={onBackClick}>
           <ArrowBackIcon style={{ color: 'white' }} />
@@ -38,6 +45,13 @@ const SearchBar = ({ onSearch, searchTerm }) => {
           '& .MuiInputLabel-root': {
             color: 'white',
           },
+        }}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position='start'>
+              <SearchIcon style={{ color: 'white' }} />
+            </InputAdornment>
+          ),
         }}
       />
     </div>

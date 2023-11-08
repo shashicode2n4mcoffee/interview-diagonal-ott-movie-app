@@ -40,7 +40,7 @@ const Dashboard = ({ fetchMoviesRequest, data, loading, error }) => {
         <SearchBar onSearch={setSearchTerm} searchTerm={searchTerm} />
       </div>
       <div className='movie-list'>
-        {data?.page?.['total-content-items'] && (
+        {movieList && data?.page?.['total-content-items'] && (
           <MovieList
             movies={movieList}
             currentPage={currentPage}
